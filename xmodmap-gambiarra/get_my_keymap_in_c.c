@@ -18,13 +18,19 @@ int main(void) {
     printf("    int first_keycode = %d;\n", min);
     printf("    int keysyms_per_keycode = %d;\n", keysyms_per_keycode);
     printf("    int num_of_keycodes = %d;\n", max-min);
-    printf("    KeySym keysyms[%d] = {", ((max-min) * keysyms_per_keycode) + 1);
+    printf("    KeySym keysyms[%d] = {\n", ((max-min) * keysyms_per_keycode) + 1);
     for (k = 0, i = 0; i < (max-min); i++) {
+        printf("        ");
         for (j = 0; j < keysyms_per_keycode; j++) {
+            if (j)
+                printf(" ");
+            else
+                printf("/* keycode = %d */ ", min+i);
             printf("%ld,", keysyms[k++]);
         }
+        printf("\n");
     }
-    printf("0};\n");
+    printf("        0\n    };\n");
     printf("    Display* display = XOpenDisplay(NULL);\n");
     printf("    XChangeKeyboardMapping(display,first_keycode,keysyms_per_keycode,keysyms,num_of_keycodes);\n");
     printf("    XCloseDisplay(display);\n");
